@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
+html, body { width: 100%; height: 100%; background: #170d2b; color: #fff; overflow: hidden; }
+.box { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 100%; padding: 12px 16px; border: 3px solid #ec4899; border-radius: 14px; background: #170d2b; }
+.txt { flex: 1; min-width: 0; }
+.titulo { color: #ec4899; font-weight: bold; font-size: 14px; letter-spacing: 1px; margin-bottom: 6px; }
+.msg { font-size: 18px; line-height: 1.3; font-weight: bold; }
+.img { flex: 0 0 auto; height: 100%; display: flex; align-items: center; justify-content: center; }
+.img img { height: 100%; max-width: 150px; object-fit: contain; border-radius: 10px; display: block; }
+.img.fb img { max-width: 280px; }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="txt">
+    <div class="titulo">ELIABI GAMEZONE</div>
+    <div class="msg" id="msg"></div>
+  </div>
+  <div class="img" id="imgbox"><img id="img" alt=""></div>
+</div>
+<script>
+var p = new URLSearchParams(location.search);
+document.getElementById('msg').textContent = p.get('msg') || '';
+var mapa = { logo: 'logoeli.jpeg', fb: 'Fcebook.jpeg' };
+var im = p.get('img');
+var caja = document.getElementById('imgbox');
+if (mapa[im]) {
+  document.getElementById('img').src = mapa[im];
+  if (im === 'fb') caja.classList.add('fb');
+} else {
+  caja.style.display = 'none';
+}
+</script>
+</body>
+</html>
