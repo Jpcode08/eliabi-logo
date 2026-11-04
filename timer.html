@@ -28,15 +28,27 @@
     <div id="reloj">00:00</div>
 
     <script>
-        // Obtener los segundos restantes pasados por la URL (?seg=300)
         const urlParams = new URLSearchParams(window.location.search);
         let tiempo = parseInt(urlParams.get('seg')) || 0;
 
         function actualizarReloj() {
-            let min = Math.floor(tiempo / 60);
-            let sec = tiempo % 60;
-            document.getElementById('reloj').innerText = 
-                (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
+            let h = Math.floor(tiempo / 3600);
+            let m = Math.floor((tiempo % 3600) / 60);
+            let s = tiempo % 60;
+
+            let texto = "";
+            if (h > 0) {
+                // Si pasa de 1 hora, muestra Horas:Minutos:Segundos
+                texto = (h < 10 ? '0' : '') + h + ':' + 
+                        (m < 10 ? '0' : '') + m + ':' + 
+                        (s < 10 ? '0' : '') + s;
+            } else {
+                // Si es menor a 1 hora, muestra Minutos:Segundos
+                texto = (m < 10 ? '0' : '') + m + ':' + 
+                        (s < 10 ? '0' : '') + s;
+            }
+
+            document.getElementById('reloj').innerText = texto;
             
             if (tiempo > 0) {
                 tiempo--;
