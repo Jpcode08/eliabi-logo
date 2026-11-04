@@ -1,65 +1,25 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <style>
-        body {
-            background-color: transparent !important;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        #reloj {
-            font-size: 52px;
-            font-weight: 900;
-            color: #FFFFFF;
-            text-shadow: 3px 3px 6px #000000, -2px -2px 4px #000000, 0px 0px 10px #000000;
-            letter-spacing: 2px;
-        }
-    </style>
+<meta charset="UTF-8">
+<style>
+html, body { margin: 0; padding: 0; background: transparent; overflow: hidden; }
+#t { font: bold 56px Arial, sans-serif; color: #ffffff; text-align: center; text-shadow: 0 0 6px #000, 0 0 12px #000; }
+</style>
 </head>
 <body>
-
-    <div id="reloj">00:00</div>
-
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        let tiempo = parseInt(urlParams.get('seg')) || 0;
-
-        function actualizarReloj() {
-            let h = Math.floor(tiempo / 3600);
-            let m = Math.floor((tiempo % 3600) / 60);
-            let s = tiempo % 60;
-
-            let texto = "";
-            if (h > 0) {
-                texto = (h < 10 ? '0' : '') + h + ':' + 
-                        (m < 10 ? '0' : '') + m + ':' + 
-                        (s < 10 ? '0' : '') + s;
-            } else {
-                texto = (m < 10 ? '0' : '') + m + ':' + 
-                        (s < 10 ? '0' : '') + s;
-            }
-
-            document.getElementById('reloj').innerText = texto;
-            
-            if (tiempo > 0) {
-                tiempo--;
-            } else {
-                // CUANDO LLEGA A CERO: Cierra la notificación de PiPup en la TV
-                setTimeout(() => {
-                    fetch("http://127.0.0.1:7979/dismiss", { method: "POST" }).catch(() => {});
-                }, 1000);
-            }
-        }
-
-        actualizarReloj();
-        setInterval(actualizarReloj, 1000);
-    </script>
+<div id="t">--:--</div>
+<script>
+var m = /[?&]seg=(\d+)/.exec(location.search);
+var end = new Date().getTime() + (m ? parseInt(m[1], 10) : 0) * 1000;
+function dos(n) { return (n < 10 ? '0' : '') + n; }
+function f() {
+  var r = Math.max(0, Math.round((end - new Date().getTime()) / 1000));
+  var h = Math.floor(r / 3600), mi = Math.floor((r % 3600) / 60), s = r % 60;
+  document.getElementById('t').innerHTML = (h > 0 ? h + ':' : '') + dos(mi) + ':' + dos(s);
+}
+f();
+setInterval(f, 1000);
+</script>
 </body>
 </html>
