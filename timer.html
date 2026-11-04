@@ -38,12 +38,10 @@
 
             let texto = "";
             if (h > 0) {
-                // Si pasa de 1 hora, muestra Horas:Minutos:Segundos
                 texto = (h < 10 ? '0' : '') + h + ':' + 
                         (m < 10 ? '0' : '') + m + ':' + 
                         (s < 10 ? '0' : '') + s;
             } else {
-                // Si es menor a 1 hora, muestra Minutos:Segundos
                 texto = (m < 10 ? '0' : '') + m + ':' + 
                         (s < 10 ? '0' : '') + s;
             }
@@ -52,6 +50,11 @@
             
             if (tiempo > 0) {
                 tiempo--;
+            } else {
+                // CUANDO LLEGA A CERO: Cierra la notificación de PiPup en la TV
+                setTimeout(() => {
+                    fetch("http://127.0.0.1:7979/dismiss", { method: "POST" }).catch(() => {});
+                }, 1000);
             }
         }
 
